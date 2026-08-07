@@ -377,28 +377,29 @@ async function updateAINote(dateStr) {
   
   const apiKey = localStorage.getItem('geminiApiKey') || DEFAULT_API_KEY;
   
-  if (!apiKey) {
-    // Kural tabanlı fallback
-    let note = "";
+  // Kural Tabanlı Fallback Mantığı
+  const getRuleBasedNote = () => {
     if (log.symptoms && log.symptoms.includes("Kramp") || log.pain === "Yoğun" || log.pain === "Orta") {
-      note = "Krampların için sıcak su torbası ve papatya çayı harika bir ikilidir. Biraz dinlenmeyi hak ettin! ☕💖";
+      return "Krampların için sıcak su torbası ve papatya çayı harika bir ikilidir. Biraz dinlenmeyi hak ettin! ☕💖";
     } else if (log.symptoms && log.symptoms.includes("Şişkinlik")) {
-      note = "Şişkinlik hissediyorsan bol bol su içmeyi ve tuzlu yiyeceklerden uzak durmayı unutma. 💧";
+      return "Şişkinlik hissediyorsan bol bol su içmeyi ve tuzlu yiyeceklerden uzak durmayı unutma. 💧";
     } else if (log.mood === "Sinirli" || log.mood === "Sıkılmış") {
-      note = "Bugün ruh halin biraz dalgalı gibi. Kendine vakit ayır, sevdiğin bir müziği aç ve derin bir nefes al. 🎶✨";
+      return "Bugün ruh halin biraz dalgalı gibi. Kendine vakit ayır, sevdiğin bir müziği aç ve derin bir nefes al. 🎶✨";
     } else if (log.mood === "Duygusal") {
-      note = "Duygusal hissetmen çok normal, hormonların şu an dans ediyor. Kendine şefkatli davran. 🌸";
+      return "Duygusal hissetmen çok normal, hormonların şu an dans ediyor. Kendine şefkatli davran. 🌸";
     } else if (log.symptoms && log.symptoms.includes("Her şey yolunda")) {
-      note = "Harika! Bugün her şeyin yolunda olmasına çok sevindim. Günün tadını çıkar! 🌟";
+      return "Harika! Bugün her şeyin yolunda olmasına çok sevindim. Günün tadını çıkar! 🌟";
     } else if (log.symptoms && log.symptoms.includes("Akne")) {
-      note = "Cildin şu sıralar hassas olabilir. Bol su içip yüzünü nazikçe temizlemeyi unutma. ✨";
+      return "Cildin şu sıralar hassas olabilir. Bol su içip yüzünü nazikçe temizlemeyi unutma. ✨";
     } else if (log.flow === "Ağır") {
-      note = "Yoğun bir gün geçiriyorsun. Demir açısından zengin beslenmeye (ıspanak, pekmez vb.) özen göster! 💪";
+      return "Yoğun bir gün geçiriyorsun. Demir açısından zengin beslenmeye (ıspanak, pekmez vb.) özen göster! 💪";
     } else {
-      note = "Bugün nasılsın? Girdiğin verilere göre gerçek yapay zeka tavsiyesi almak için Ayarlar'dan Gemini API anahtarını ekleyebilirsin! ✨";
+      return "Bugün nasılsın? Girdiğin verilere göre gerçek yapay zeka tavsiyesi almak için Ayarlar'dan Gemini API anahtarını ekleyebilirsin! ✨";
     }
-    
-    aiNoteText.innerText = note;
+  };
+
+  if (!apiKey) {
+    aiNoteText.innerText = getRuleBasedNote();
     aiNoteCard.style.display = 'block';
     return;
   }
@@ -440,7 +441,9 @@ Kural: Kesinlikle 2 kısa cümleyi geçme. Sadece mesajı ver.
     const aiMessage = data.candidates[0].content.parts[0].text;
     aiNoteText.innerText = aiMessage.replace(/\*/g, ''); // Temizle
   } catch (error) {
-    aiNoteText.innerText = "Bağlantı hatası: " + error.message;
+    // Fallback to rule-based logic if API fails
+    console.error("AI API Error:", error);
+    aiNoteText.innerText = getRuleBasedNote();
   }
 }
 
