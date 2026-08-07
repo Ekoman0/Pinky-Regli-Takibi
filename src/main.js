@@ -19,7 +19,7 @@ let userData = {
 };
 let currentCalendarDate = new Date();
 let selectedModalDateStr = "";
-const DEFAULT_API_KEY = ""; // GitHub güvenlik gereği boş bırakıldı, ayarlardan girilebilir.
+const DEFAULT_API_KEY = import.meta.env.VITE_GEMINI_API_KEY || ""; 
 
 // Data Lists for Chips
 const flowOptions = ["Ağır", "Orta", "Hafif", "Yok"];
@@ -377,24 +377,24 @@ async function updateAINote(dateStr) {
   
   const apiKey = localStorage.getItem('geminiApiKey') || DEFAULT_API_KEY;
   
-  // Kural Tabanlı Fallback Mantığı
+  // Kural Tabanlı Fallback Mantığı (Çok Daha Tatlı ve Destekleyici)
   const getRuleBasedNote = () => {
     if (log.symptoms && log.symptoms.includes("Kramp") || log.pain === "Yoğun" || log.pain === "Orta") {
-      return "Krampların için sıcak su torbası ve papatya çayı harika bir ikilidir. Biraz dinlenmeyi hak ettin! ☕💖";
+      return "Ah canım benimmm... 🥺 Bugün bedenin seni biraz yoruyor farkındayım ama ben sımsıkı yanındayım! Lütfen karnına sıcak bir su torbası koyup battaniyenin altına kıvrıl. Sen her şeyden değerlisin, dinlenmeyi sonuna kadar hak ediyorsun! ❤️‍🩹☕";
     } else if (log.symptoms && log.symptoms.includes("Şişkinlik")) {
-      return "Şişkinlik hissediyorsan bol bol su içmeyi ve tuzlu yiyeceklerden uzak durmayı unutma. 💧";
+      return "Biliyorum, bugün kendini biraz davul gibi şişkin hissediyorsun ama merak etme bu tamamen geçici! 🎈 Lütfen bol bol su iç ve bugün tuzlu şeylerden uzak dur. Çok güzelsin, bunu sakın unutma! 🌸💧";
     } else if (log.mood === "Sinirli" || log.mood === "Sıkılmış") {
-      return "Bugün ruh halin biraz dalgalı gibi. Kendine vakit ayır, sevdiğin bir müziği aç ve derin bir nefes al. 🎶✨";
+      return "Bugün dünya biraz üstüne geliyor gibi hissetmen çok normal, çünkü hormonların şu an çılgınca dans ediyor... 🌪️ Derin bir nefes al, sevdiğin o rahatlatıcı şarkıyı aç ve kimsenin canını sıkmasına izin verme. Yanındayım! 🎶💖";
     } else if (log.mood === "Duygusal") {
-      return "Duygusal hissetmen çok normal, hormonların şu an dans ediyor. Kendine şefkatli davran. 🌸";
+      return "Canım benimm... Bugün gözyaşların gözünün ucunda olabilir, her şeye alınabilirsin. Bunların hepsi çok normal, lütfen duygularını yaşa ve kendine sımsıcak sarıl. Seni çok iyi anlıyorum ve buradayım! 🥺🧸💕";
     } else if (log.symptoms && log.symptoms.includes("Her şey yolunda")) {
-      return "Harika! Bugün her şeyin yolunda olmasına çok sevindim. Günün tadını çıkar! 🌟";
+      return "İşte görmek istediğim o enerji! 😍 Bugün her şeyin yolunda olmasına, kendini böyle güzel ve dengede hissetmene o kadar sevindim ki! Güneşli günün tadını çıkar harika kadın! ☀️💃✨";
     } else if (log.symptoms && log.symptoms.includes("Akne")) {
-      return "Cildin şu sıralar hassas olabilir. Bol su içip yüzünü nazikçe temizlemeyi unutma. ✨";
+      return "Yüzünde çıkan o minik misafirleri hiç dert etme, geçip gidecekler! 🫧 Sen her halinle ışıl ışılsın. Cildine bugün ekstra nazik davran ve bolca su içmeyi unutma aşkım! ✨🎀";
     } else if (log.flow === "Ağır") {
-      return "Yoğun bir gün geçiriyorsun. Demir açısından zengin beslenmeye (ıspanak, pekmez vb.) özen göster! 💪";
+      return "Bedenin bugün senin için gerçekten çok sıkı çalışıyor... Yorgun hissetmen o kadar doğal ki! 🩸 Lütfen bugün ağır işler yapma, pekmezli bir şeyler ye ve kendine kocaman şefkat göster. Dinlen! 🛌💖";
     } else {
-      return "Bugün nasılsın? Girdiğin verilere göre gerçek yapay zeka tavsiyesi almak için Ayarlar'dan Gemini API anahtarını ekleyebilirsin! ✨";
+      return "Bugün kendini nasıl hissediyorsun canım? Ne yaşarsan yaşa, bedenin ve duyguların ne kadar karmaşık olursa olsun Pinky her zaman seni dinlemek için burada! Sımsıkı sarıldım... 🌸🤗";
     }
   };
 
